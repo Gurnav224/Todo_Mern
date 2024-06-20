@@ -5,7 +5,8 @@ const Uri = process.env.MONGODB_URL;
 
 export const connectDB = async (req,res)=>{
     try {
-        const connection = await mongoose.connect(Uri)
+        const connection = await mongoose.connect(Uri,{dbName:"TodoDB"})
+        
         if(connection){
             console.log(`successfully connected to database ${connection.connection.host}`)
         }
