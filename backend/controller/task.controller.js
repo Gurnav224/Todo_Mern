@@ -48,7 +48,7 @@ export const createTask = async (req, res) => {
 export const getTasks = async (req, res) => {
   console.log("get Task user Id", req.user);
   try {
-    const tasks = await Task.find({ user_id: req.user });
+    const tasks = await Task.find({ });
     res.json(tasks);
   } catch (error) {
     console.error(error.message);
