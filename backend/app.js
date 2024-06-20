@@ -2,6 +2,7 @@ import { connectDB } from "./config/db.connect.js";
 import express from "express";
 import authRoutes from "./routes/auth.routes.js";
 import taskRoutes from "./routes/task.routes.js"
+import userRoutes from './routes/user.routes.js';
 const app = express();
 
 app.use(express.json());
@@ -11,6 +12,7 @@ connectDB();
 
 app.use('/api/auth',authRoutes);
 app.use('/api/auth',taskRoutes)
+app.use('/api',userRoutes)
 
 app.get('/',(req,res)=>{
     res.send(`<h1>Todo server </h1>`)
