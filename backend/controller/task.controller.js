@@ -5,9 +5,7 @@ import User from "../model/user.models.js";
 export const createTask = async (req, res) => {
     const { title, description, start_date, end_date, progress } = req.body;
 
-    console.log(req.body);
 
-    console.log('user id create new task ',req.user)
 
     try {
         // Ensure user exists before creating task
@@ -27,10 +25,7 @@ export const createTask = async (req, res) => {
 
         const savedTask = await task.save();
 
-        console.log(savedTask);
-        console.log('create Task user id', req.user);
 
-        console.log('new task created by ', user);
 
         user.tasks.push(task._id);
 
@@ -46,13 +41,69 @@ export const createTask = async (req, res) => {
 
 
 export const getTasks = async (req, res) => {
-  console.log("get Task user Id", req.user);
   try {
-    const tasks = await Task.find({ });
-    res.json(tasks);
+    const tasks = await Task.find({});
+    if(tasks.length!==0){
+res.status(200).json({msg:'successfully get all tasks',tasks})
+    }
+    else{
+
+      res.status(404).json({message:'not task found'})
+    }
   } catch (error) {
-    console.error(error.message);
-    res.status(500).send("server error");
+    res.status(500).json({msg:'server error',error:error.message});
   }
 };
 
+
+
+export const getSingleTask =  async (req,res)=>{
+  const taskId = req.params.taskId
+  try {
+    const task = await Task.findById(taskId);
+    if(task){
+      res.status(200).json({msg:'successfully get single task',task:task})
+    }
+    else{
+      res.status(404).json({message:'not task found'})
+    }
+    res.json(task)
+  } catch (error) {
+    res.status(500).json({msg:'server error',error:error.message});
+  }
+}
+
+export const getUpdateTask = async  (req,res)=>{
+ try {
+  const task = req.body;
+  const taskId = req.params.taskId;
+  const updatedTask =  await Task.findByIdAndUpdate(taskId,task,{new:true});
+
+  if(updatedTask){
+    res.status(200).json({message:'task updated successfully',task:updatedTask})
+  }
+  else{
+    res.status(404).json({message:'not task found'})
+  }
+
+ } catch (error) {
+  res.status(500).json({msg:'server error',error:error.message});
+ }
+}
+
+
+export const getDeleteTask = async (req,res)=>{
+  try {
+    const taskId = req.params.taskId;
+    const deleteTask = await Task.findByIdAndDelete(taskId);
+    if(deleteTask){
+      res.status(200).json({delete:'successfully',deleteTask})
+
+    }
+    else{
+      res.status(404).json({message:'not task found'})
+    }
+  } catch (error) {
+    res.status(500).json({msg:'server error',error:error.message});
+  }
+}
