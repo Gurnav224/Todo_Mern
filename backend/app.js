@@ -3,6 +3,7 @@ import express from "express";
 import authRoutes from "./routes/auth.routes.js";
 import taskRoutes from "./routes/task.routes.js"
 import userRoutes from './routes/user.routes.js';
+import auth from "./middleware/auth.js";
 
 
 const app = express();
@@ -13,9 +14,9 @@ connectDB();
 
 
 
-app.use('/api',authRoutes);
-app.use('/api',taskRoutes)
-app.use('/api',userRoutes)
+app.use('/api/v1',authRoutes);
+app.use('/api/v1',auth,taskRoutes)
+app.use('/api/v1',auth,userRoutes)
 
 app.get('/',(req,res)=>{
     res.send(`<h1>Todo server </h1>`)
