@@ -23,8 +23,8 @@ connectDB();
 
 
 app.use('/api/v1',authRoutes);
-app.use('/api/v1',auth,taskRoutes)
-app.use('/api/v1',auth,userRoutes)
+app.use('/api/v1',taskRoutes)
+app.use('/api/v1',userRoutes)
 
 app.get('/',(req,res)=>{
     res.send(`<h1>Todo server </h1>`)
